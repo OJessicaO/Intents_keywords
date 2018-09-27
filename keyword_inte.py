@@ -5,8 +5,8 @@ import RAKE
 # create rake_object with file containing stop words to be used (optional)
 rake_object = RAKE.Rake("/Users/jessicasethi/Desktop/training_phrases.txt")
 
-# read csv file
-data_as_pandas_df = pd.read_csv("/Users/jessicasethi/Documents/Xane/Jiva_data.csv")
+# read json file
+data_as_pandas_df = pd.pd.io.json.read_json("/Users/jessicasethi/Documents/Xane/Jiva_data.json")
 data_array = np.array(data_as_pandas_df)
 
 themes = np.unique(data_array[:,0])
