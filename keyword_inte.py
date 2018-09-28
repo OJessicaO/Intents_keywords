@@ -6,17 +6,17 @@ import RAKE
 rake_object = RAKE.Rake("/Users/jessicasethi/Desktop/training_phrases.txt")
 
 # read json file
-data_as_pandas_df = pd.pd.io.json.read_json("/Users/jessicasethi/Documents/Xane/Jiva_data.json")
+data_as_pandas_df = pd.io.json.read_json("/Users/jessicasethi/Documents/Xane/Jiva_data.json")
 data_array = np.array(data_as_pandas_df)
 
-themes = np.unique(data_array[:,0])
+themes = np.unique(data_array[:,1])
 
 # list of lists of keywords for each theme
 big_list = []
 
 # traverse through themes
 for theme in themes:
-        reviews_of_this_theme = data_array[data_array[:,0]==theme, 1]
+        reviews_of_this_theme = data_array[data_array[:,1]==theme, 0]
         reviews_of_this_theme = np.delete(reviews_of_this_theme, np.where(reviews_of_this_theme!=reviews_of_this_theme))
         text = " ".join(reviews_of_this_theme)
 
@@ -47,11 +47,7 @@ for theme in themes:
 
         
         # create table of keywords of the theme, reviews containg each keyword and frequency of each keyword and put in list
-        ar1 = np.array(keys).reshape(len(keys),1)
-        ar2 = np.array(reviews_with_this_keyword).reshape(len(keys),1)
-        ar3 = np.array(frequency_of_keyword_in_this_theme).reshape(len(keys),1)
-        array = np.concatenate((ar1, ar2, ar3), axis = 1)
-        array = array.tolist()
+        array = list(zip(keys, reviews_with_this_keyword, frequency_of_keyword_in_this_theme))
 
         # add the list for this theme to the big list
         big_list.append(array)
@@ -59,10 +55,7 @@ for theme in themes:
 
 
 # create array from big_list with theme names
-ar1 = themes.reshape(len(themes),1)
-ar2 = np.array(big_list).reshape(len(themes),1)
-array = np.concatenate((ar1, ar2), axis = 1)
-array = array.tolist()
+array = list(zip(themes, big_list))
 
 # create object in json format from array
 dict1 = [{'theme': elem[0], 'keywords' : [{'word' : item[0], 'frequency' : item[2],
